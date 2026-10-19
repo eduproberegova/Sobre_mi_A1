@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Control léxico-gramatical · 2 curso</title>
+<meta name="description" content="Лексико-граматична контрольна робота з іспанської мови · 2 курс · A1 · Берегова О. А.">
+<meta property="og:title" content="Control léxico-gramatical · 2 curso">
+<meta property="og:description" content="Лексико-граматична контрольна робота з іспанської мови · 2 курс · A1 · Берегова О. А.">
+<meta property="og:image" content="og-image.jpg">
+<meta name="theme-color" content="#C8203F">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@600;700&display=swap">
+<style>
+:root{
+  --bg:#F3F7FB; --paper:#FFFFFF; --ink:#18202C; --muted:#5A6678; --line:#D6E2EE;
+  --red:#C8203F; --red-soft:#FBE3E8; --ice:#DCEAF7; --ice-deep:#B3D1ED;
+  --ok:#1C8A57; --ok-soft:#DDF3E8; --warn:#B86E00; --warn-soft:#FDF0DA;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.55 var(--f-body);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-text-size-adjust:100%}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ice-deep);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header.top{background:var(--paper);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px}
+.logo{width:40px;height:40px;border-radius:50%;flex:none;object-fit:cover}
+.brand{font:700 13px/1.2 var(--f-mono);color:var(--red);letter-spacing:.04em}
+.brand small{display:block;color:var(--muted);font:400 13px/1.3 var(--f-body);letter-spacing:0}
+h1{font:800 clamp(26px,5vw,36px)/1.1 var(--f-display);margin:28px 0 6px;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--red)}
+.lead{color:var(--muted);margin:0 0 22px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 16px}
+label.f{display:block;font-weight:600;margin:0 0 6px}
+input.t,textarea.t{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;font-size:18px}
+input.t:focus,textarea.t:focus{border-color:var(--ice-deep);outline:none;box-shadow:0 0 0 3px var(--ice)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+.vars{display:flex;gap:8px;flex-wrap:wrap}
+.vars label{flex:1 1 70px;border:1.5px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-weight:700;cursor:pointer;background:#fff}
+.vars input{position:absolute;opacity:0;pointer-events:none}
+.vars label:has(input:checked){border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 22px;font-weight:700;font-size:17px;background:var(--red);color:#fff;min-height:48px}
+.btn:hover{filter:brightness(1.06)}
+.btn.sec{background:var(--ice);color:var(--ink)}
+.btn.wide{width:100%}
+.btn[disabled]{opacity:.5;cursor:default}
+.err{color:var(--red);font-weight:600;min-height:1.4em;margin:10px 0 0}
+details.acc{border-top:1px solid var(--line);padding:10px 0}
+details.acc:first-of-type{border-top:0}
+details.acc summary{font-weight:700;cursor:pointer}
+table.ct{width:100%;border-collapse:collapse;margin:10px 0 4px;font-size:15px}
+table.ct th,table.ct td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.ct th{background:var(--ice);font-weight:700}
+table.ct td:last-child,table.ct th:last-child{text-align:right;white-space:nowrap}
+table.ct tr.tot td{font-weight:700;background:var(--red-soft)}
+ul.rules{margin:8px 0 0;padding-left:20px}
+ul.rules li{margin:4px 0}
+/* test */
+.thead{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.thead .wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
+.thead .t{flex:1;min-width:0;font-weight:700;font-size:15px;line-height:1.25}
+.thead .t small{display:block;font-weight:400;color:var(--muted)}
+.total{font:700 14px var(--f-mono);color:var(--muted);text-align:right;white-space:nowrap}
+.bar{height:5px;background:var(--ice)}
+.bar i{display:block;height:100%;background:var(--red);transition:width .25s linear}
+.qwrap{padding-top:22px}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px;gap:10px}
+.pill{font:700 13px var(--f-mono);background:var(--ice);border-radius:99px;padding:5px 11px}
+.clock{font:700 26px var(--f-mono);color:var(--ink);min-width:86px;text-align:right}
+.clock.warn{color:var(--warn)}
+.clock.danger{color:var(--red)}
+.instr{color:var(--muted);font-size:15px;margin:0 0 12px}
+.q{font-size:21px;line-height:1.5;margin:0 0 6px}
+.q input.gap{display:inline-block;width:auto;min-width:150px;max-width:100%;border:0;border-bottom:2px solid var(--red);border-radius:0;padding:2px 6px;font-size:20px;background:var(--red-soft);margin:2px 2px}
+.q input.gap:focus{outline:none;background:#fff;box-shadow:0 2px 0 var(--red)}
+.ua{font-size:22px;font-weight:600;margin:0 0 14px}
+.ua .flag{font:700 12px var(--f-mono);color:var(--muted);display:block;margin-bottom:4px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:#fff;text-align:left;font-size:19px;width:100%}
+.opt b{font:700 14px var(--f-mono);color:var(--muted);width:22px}
+.opt.on{border-color:var(--red);background:var(--red-soft)}
+.keys{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0}
+.keys button{min-width:44px;min-height:44px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:19px;font-weight:600;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.keys button:active{background:var(--ice)}
+.nav{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin:22px 0 40px}
+.nav .hint{flex:1;color:var(--muted);font-size:14px}
+.intro h2{font:800 28px/1.15 var(--f-display);margin:0 0 6px}
+.intro .num{font:700 14px var(--f-mono);color:var(--red);letter-spacing:.06em}
+.intro p{margin:8px 0}
+/* results */
+.score{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 4px}
+.score div{flex:1 1 150px;background:var(--ice);border-radius:12px;padding:12px 14px}
+.score b{display:block;font:800 30px var(--f-display)}
+.score span{font-size:14px;color:var(--muted)}
+.it{border-top:1px solid var(--line);padding:9px 0;font-size:16px}
+.it .m{font:700 13px var(--f-mono);margin-right:6px}
+.it.ok .m{color:var(--ok)} .it.half .m{color:var(--warn)} .it.no .m{color:var(--red)} .it.rev .m{color:var(--muted)}
+.it .you{color:var(--muted)}
+.it .key{color:var(--ok);font-weight:600}
+.status{border-radius:12px;padding:12px 14px;margin:0 0 12px;font-weight:600}
+.status.ok{background:var(--ok-soft);color:var(--ok)}
+.status.wait{background:var(--warn-soft);color:var(--warn)}
+.status.bad{background:var(--red-soft);color:var(--red)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+@media print{
+  header.top,.thead,.btns,.status{display:none!important}
+  body{background:#fff}
+  .card{border:0;padding:0}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===== CONFIG ===== */
+const CONFIG = {
+  FORM_URL: 'https://formspree.io/f/xaqarvll', // куди надходять роботи
+  SHOW_KEY: true,      // true — після здачі студент бачить правильні відповіді
+  INTRO_SEC: 15,       // секунд на екран-заставку перед кожним завданням
+  GUARD_MS: 800,       // захист від подвійного натискання
+};
+const META={"store": "lgc2_2026_10", "title": "Control léxico-gramatical", "sub": "Lecciones 1–3 · Segunda parte, lección 1", "course": "2 курс", "level": "A1", "group": "2 іт", "short": "LG-2curso"};
+// Лексико-граматична контрольна · 2 курс (італійська філологія) · A1
+// Джерело: Серебрянська А. О., Серебрянська Т. М. Іспанська мова для початківців, с. 9–90, 103–120
+const PARTS = [
+  { id:'P1', type:'gap',  sec:40, pts:2, art:true,
+    title:'Léxico I · La universidad, la clase, la familia',
+    instr:'Complete la frase con una sola palabra. Escríbala usted mismo/a.' },
+  { id:'P2', type:'tr',   sec:40, pts:2, art:true,
+    title:'Léxico II · Palabras y expresiones',
+    instr:'Traduzca al español.' },
+  { id:'P3', type:'gap',  sec:35, pts:2,
+    title:'Gramática I · Presente de indicativo',
+    instr:'Ponga el verbo entre paréntesis en presente de indicativo. Con los verbos reflexivos escriba también el pronombre (me, te, se…).' },
+  { id:'P4', type:'gap',  sec:30, pts:2,
+    title:'Gramática II · Ser o estar',
+    instr:'Complete con la forma correcta de ser o estar.' },
+  { id:'P5', type:'mc',   sec:30, pts:1,
+    title:'Gramática III · Artículos y preposiciones',
+    instr:'Elija la opción correcta.' },
+  { id:'P6', type:'mc',   sec:30, pts:1,
+    title:'Gramática IV · Posesivos',
+    instr:'Elija la opción correcta.' },
+  { id:'P7', type:'gap',  sec:50, pts:2,
+    title:'Números y la hora',
+    instr:'Escriba con letras el número o la hora entre paréntesis.' },
+  { id:'P8', type:'free', sec:90, pts:5,
+    title:'Traducción',
+    instr:'Traduzca la frase al español.' },
+];
+
+const V = {
+1: {
+  P1: [
+    { q:'En el aula hay mesas y sillas, y en la pared hay una ___: el profesor escribe en ella.', a:['pizarra'] },
+    { q:'El estudiante saca el manual de su ___ y lo pone sobre la mesa.', a:['cartera','mochila','bolsa'] },
+    { q:'Estudio en la Facultad de ___ porque quiero ser traductor.', a:['traducción','traductores'] },
+    { q:'Por la mañana suena el ___ y me despierto.', a:['despertador'] },
+    { q:'Mi abuela ya no trabaja: está ___.', a:['jubilada'] },
+    { q:'Los habitantes de México se llaman ___.', a:['mexicanos','mejicanos'] },
+    { q:'Me llamo Andrés y mi ___ es Yakovenko.', a:['apellido'] },
+    { q:'En la universidad estudiamos historia, filosofía y otras ___.', a:['asignaturas','materias'] },
+  ],
+  P2: [
+    { q:'поспішати', a:['tener prisa','darse prisa','ir con prisa'] },
+    { q:'прокидатися', a:['despertarse'] },
+    { q:'іноземні мови', a:['las lenguas extranjeras','los idiomas extranjeros'] },
+    { q:'читальний зал', a:['la sala de lectura'] },
+    { q:'пенсіонер', a:['el jubilado','el pensionista','la jubilada','la pensionista'] },
+    { q:'переклад', a:['la traducción'] },
+  ],
+  P3: [
+    { q:'Yo no (saber) ___ la respuesta.', a:['sé'] },
+    { q:'Nosotros (empezar) ___ las clases a las ocho y media.', a:['empezamos'] },
+    { q:'¿A qué hora (volver) ___ tú a casa?', a:['vuelves'] },
+    { q:'Yo (hacer) ___ los ejercicios por la tarde.', a:['hago'] },
+    { q:'En el café mi hermano (pedir) ___ un refresco.', a:['pide'] },
+    { q:'Yo (salir) ___ de casa a las siete y veinticinco.', a:['salgo'] },
+    { q:'Los niños (jugar) ___ en el parque.', a:['juegan'] },
+    { q:'Yo (traducir) ___ el texto sin diccionario.', a:['traduzco'] },
+    { q:'Yo (levantarse) ___ temprano.', a:['me levanto'] },
+    { q:'Vosotros (acostarse) ___ muy tarde.', a:['os acostáis'] },
+  ],
+  P4: [
+    { q:'Mi hermana ___ periodista.', a:['es'] },
+    { q:'Hoy yo ___ muy cansado.', a:['estoy'] },
+    { q:'Nosotros ___ de Ucrania, de Kyiv.', a:['somos'] },
+    { q:'¿Dónde ___ la biblioteca?', a:['está'] },
+    { q:'Las sillas del aula ___ de madera.', a:['son'] },
+    { q:'Hoy ___ martes, 3 de noviembre.', a:['es'] },
+  ],
+  P5: [
+    { q:'Víctor va ___ universidad.', o:['a la','al','en la'], c:0 },
+    { q:'Es el libro ___ estudiante.', o:['de el','del','al'], c:1 },
+    { q:'Juan canta ___ Roberto.', o:['con','de','en'], c:0 },
+    { q:'Esta libreta es ___ Elena.', o:['por','para','a'], c:1 },
+    { q:'Paseamos ___ la calle Shevchenko.', o:['por','para','a'], c:0 },
+    { q:'___ agua es útil para el hombre.', o:['La','El','Un'], c:1 },
+    { q:'María vive en una casa ___ piedra.', o:['de','con','en'], c:0 },
+    { q:'Escucho ___ la profesora.', o:['— (nada)','a','de'], c:1 },
+  ],
+  P6: [
+    { q:'Nosotros vivimos con ___ padres.', o:['nuestro','nuestros','nuestras'], c:1 },
+    { q:'Andrés, ¿es ___ libro?', o:['tu','tú','tuyo'], c:0 },
+    { q:'Este abrigo es ___.', o:['mi','mío','mía'], c:1 },
+    { q:'Un amigo ___ te llamó ayer.', o:['tu','tuyo','tuya'], c:1 },
+  ],
+  P7: [
+    { q:'Mi abuelo tiene ___ años. (75)', a:['setenta y cinco'] },
+    { q:'En la biblioteca hay ___ libros españoles. (21)', a:['veintiún'] },
+    { q:'Son las ___. (8:15)', a:['ocho y cuarto','ocho y quince'] },
+    { q:'Este libro tiene ___ páginas. (300)', a:['trescientas'] },
+  ],
+  P8: [
+    { q:'Я студентка, навчаюся на факультеті перекладачів.', m:'Soy estudiante, estudio en la Facultad de Traductores (de Traducción).' },
+    { q:'У мене немає часу, я дуже поспішаю.', m:'No tengo tiempo, tengo mucha prisa.' },
+    { q:'Я прокидаюся о сьомій і йду до ванної кімнати.', m:'Me despierto a las siete y voy al cuarto de baño.' },
+    { q:'Вікна нашої аудиторії виходять у двір.', m:'Las ventanas de nuestra aula dan al patio.' },
+  ],
+},
+2: {
+  P1: [
+    { q:'Las ventanas del aula dan al ___.', a:['patio','jardín','parque'] },
+    { q:'En la sala de ___ leemos libros y revistas.', a:['lectura'] },
+    { q:'El profesor abre la ___ y entra en la clase.', a:['puerta'] },
+    { q:'Por la mañana me lavo en el cuarto de ___.', a:['baño'] },
+    { q:'Los habitantes de Argentina se llaman ___.', a:['argentinos'] },
+    { q:'En Brasil no hablan español, hablan ___.', a:['portugués'] },
+    { q:'Hoy no ___ nadie a clase: todos los estudiantes están aquí.', a:['falta'] },
+    { q:'Mi hermano trabaja en un periódico: es ___.', a:['periodista','redactor','reportero'] },
+  ],
+  P2: [
+    { q:'бути голодним', a:['tener hambre'] },
+    { q:'вмиватися', a:['lavarse'] },
+    { q:'підручник', a:['el manual','el libro de texto'] },
+    { q:'дошка (в аудиторії)', a:['la pizarra'] },
+    { q:'прізвище', a:['el apellido'] },
+    { q:'вчитися в університеті', a:['estudiar en la universidad'] },
+  ],
+  P3: [
+    { q:'Yo (poner) ___ los libros sobre la mesa.', a:['pongo'] },
+    { q:'Ellos (querer) ___ estudiar español.', a:['quieren'] },
+    { q:'Yo (conocer) ___ bien Kyiv.', a:['conozco'] },
+    { q:'¿(Poder) ___ tú ayudarme?', a:['puedes'] },
+    { q:'El profesor (repetir) ___ la pregunta.', a:['repite'] },
+    { q:'Yo (tener) ___ dieciocho años.', a:['tengo'] },
+    { q:'Nosotros (ir) ___ a la universidad en metro.', a:['vamos'] },
+    { q:'Mi madre (dormir) ___ poco.', a:['duerme'] },
+    { q:'Tú (vestirse) ___ deprisa.', a:['te vistes'] },
+    { q:'Nosotros (despertarse) ___ a las seis y media.', a:['nos despertamos'] },
+  ],
+  P4: [
+    { q:'Mi amigo no viene a clase: ___ enfermo.', a:['está'] },
+    { q:'¿Qué hora ___? — La una.', a:['es'] },
+    { q:'Vosotros ___ estudiantes de la Facultad de Traductores.', a:['sois'] },
+    { q:'Los padres de Andrés ___ en casa.', a:['están'] },
+    { q:'Este coche ___ de mi padre.', a:['es'] },
+    { q:'Tú ___ muy contenta hoy.', a:['estás'] },
+  ],
+  P5: [
+    { q:'Salimos ___ instituto a las tres.', o:['de el','del','al'], c:1 },
+    { q:'Esta noche vamos ___ teatro.', o:['a el','al','en el'], c:1 },
+    { q:'La cartera está ___ la silla.', o:['sobre','para','de'], c:0 },
+    { q:'Arturo lee un libro ___ España.', o:['sobre','por','a'], c:0 },
+    { q:'Estudio ___ saber bien el español.', o:['por','para','de'], c:1 },
+    { q:'Hoy no tengo ___ tiempo.', o:['el','un','— (nada)'], c:2 },
+    { q:'Ernesto escribe ___ bolígrafo.', o:['con','de','en'], c:0 },
+    { q:'Los alumnos saludan ___ su profesor.', o:['— (nada)','a','con'], c:1 },
+  ],
+  P6: [
+    { q:'Chicos, ¿dónde están ___ cuadernos?', o:['vuestro','vuestros','vuestras'], c:1 },
+    { q:'Ana y ___ hermana son estudiantes.', o:['su','sus','suya'], c:0 },
+    { q:'Esta casa es ___. (de nosotros)', o:['nuestra','nuestro','nuestras'], c:0 },
+    { q:'Mi coche es nuevo. ¿Y el ___? (de ti)', o:['tu','tuyo','tuya'], c:1 },
+  ],
+  P7: [
+    { q:'En nuestro grupo hay ___ estudiantes. (16)', a:['dieciséis'] },
+    { q:'Este diccionario cuesta ___ euros. (100)', a:['cien'] },
+    { q:'Son las ___. (7:45)', a:['ocho menos cuarto','ocho menos quince','siete y cuarenta y cinco'] },
+    { q:'En la fábrica trabajan ___ personas. (500)', a:['quinientas'] },
+  ],
+  P8: [
+    { q:'Мої батьки — викладачі, вони працюють в університеті.', m:'Mis padres son profesores, trabajan en la universidad.' },
+    { q:'Я голодний і хочу пити.', m:'Tengo hambre y tengo sed.' },
+    { q:'Зараз ми в аудиторії, у нас урок іспанської мови.', m:'Ahora estamos en el aula, tenemos clase de español.' },
+    { q:'Я знаю, що він студент.', m:'Sé que (él) es estudiante.' },
+  ],
+},
+3: {
+  P1: [
+    { q:'Escribimos los ejercicios en el ___.', a:['cuaderno'] },
+    { q:'La capital de Cuba es La ___.', a:['habana'] },
+    { q:'Suena el ___ y termina la lección.', a:['timbre'] },
+    { q:'El padre de mi padre es mi ___.', a:['abuelo'] },
+    { q:'Los habitantes de Perú se llaman ___.', a:['peruanos'] },
+    { q:'Cuando termina la clase, escribimos en los cuadernos los deberes de ___.', a:['casa'] },
+    { q:'Antes de salir de casa me ___ los dientes.', a:['limpio','lavo','cepillo'] },
+    { q:'La lengua oficial de Brasil es el ___.', a:['portugués'] },
+  ],
+  P2: [
+    { q:'хотіти спати', a:['tener sueño'] },
+    { q:'одягатися', a:['vestirse'] },
+    { q:'вправа', a:['el ejercicio'] },
+    { q:'зошит', a:['el cuaderno','la libreta'] },
+    { q:'викладач', a:['el profesor','la profesora'] },
+    { q:'лягати спати', a:['acostarse','irse a la cama','irse a dormir'] },
+  ],
+  P3: [
+    { q:'Yo (venir) ___ a clase en autobús.', a:['vengo'] },
+    { q:'¿Qué (decir) ___ vosotros?', a:['decís'] },
+    { q:'Yo (dar) ___ las gracias a la profesora.', a:['doy'] },
+    { q:'Ella (preferir) ___ el té.', a:['prefiere'] },
+    { q:'Los estudiantes (entender) ___ bien al profesor.', a:['entienden'] },
+    { q:'Yo (oír) ___ la radio por la mañana.', a:['oigo'] },
+    { q:'¿Cuánto (costar) ___ este diccionario?', a:['cuesta'] },
+    { q:'En el café los camareros (servir) ___ la comida.', a:['sirven'] },
+    { q:'Mi hermano (afeitarse) ___ todos los días.', a:['se afeita'] },
+    { q:'Yo (sentarse) ___ a la mesa.', a:['me siento'] },
+  ],
+  P4: [
+    { q:'Yo ___ estudiante de segundo curso.', a:['soy'] },
+    { q:'Madrid ___ en España.', a:['está'] },
+    { q:'Hace calor y las ventanas ___ abiertas.', a:['están'] },
+    { q:'El azúcar ___ dulce.', a:['es'] },
+    { q:'¿De dónde ___ tú?', a:['eres'] },
+    { q:'Ahora nosotros ___ en el aula.', a:['estamos'] },
+  ],
+  P5: [
+    { q:'___ aula es grande y clara.', o:['La','El','Lo'], c:1 },
+    { q:'Escribo una carta ___ mis padres.', o:['a','de','en'], c:0 },
+    { q:'Gracias ___ la ayuda.', o:['para','por','de'], c:1 },
+    { q:'Paseo ___ la mañana.', o:['por','para','en'], c:0 },
+    { q:'El libro ___ Juan es interesante.', o:['de','del','a'], c:0 },
+    { q:'Madrid es ___ ciudad española.', o:['— (nada)','una','un'], c:1 },
+    { q:'Estas mesas son ___ madera.', o:['de','en','con'], c:0 },
+    { q:'Mi padre trabaja ___ una fábrica.', o:['a','en','por'], c:1 },
+  ],
+  P6: [
+    { q:'Hablo con ___ profesores.', o:['mi','mis','míos'], c:1 },
+    { q:'___ casa es grande. (de nosotros)', o:['Nuestro','Nuestra','Nuestras'], c:1 },
+    { q:'Son unos amigos ___. (de mí)', o:['mis','míos','mías'], c:1 },
+    { q:'Me lavo ___ manos antes de comer.', o:['mis','las','sus'], c:1 },
+  ],
+  P7: [
+    { q:'Un año tiene ___ días. (365)', a:['trescientos sesenta y cinco'] },
+    { q:'Tengo ___ años. (22)', a:['veintidós'] },
+    { q:'Es la ___. (1:30)', a:['una y media','una y treinta'] },
+    { q:'En el aula hay ___ sillas. (31)', a:['treinta y una'] },
+  ],
+  P8: [
+    { q:'Мій брат високий і працьовитий.', m:'Mi hermano es alto y trabajador.' },
+    { q:'— Котра година? — Пів на дев’яту.', m:'—¿Qué hora es? —Son las ocho y media.' },
+    { q:'Студенти кладуть книжки на стіл.', m:'Los estudiantes ponen los libros sobre (en) la mesa.' },
+    { q:'Я живу досить далеко від університету.', m:'Vivo bastante lejos de la universidad.' },
+  ],
+},
+4: {
+  P1: [
+    { q:'Los estudiantes escriben con bolígrafos y ___.', a:['lápices'] },
+    { q:'El edificio tiene nueve pisos y tres ___.', a:['ascensores'] },
+    { q:'El café de la universidad está en la planta ___ (на рівні вулиці).', a:['baja'] },
+    { q:'La capital de Colombia es ___.', a:['bogotá'] },
+    { q:'Los habitantes de Chile se llaman ___.', a:['chilenos'] },
+    { q:'En clase los estudiantes ___ los verbos en presente de indicativo (hablo, hablas, habla…).', a:['conjugan'] },
+    { q:'La persona que traduce textos es un ___.', a:['traductor'] },
+    { q:'Julia trabaja en una fábrica: es ___.', a:['empleada','obrera','trabajadora'] },
+  ],
+  P2: [
+    { q:'мати час', a:['tener tiempo'] },
+    { q:'зачісуватися', a:['peinarse'] },
+    { q:'запитання', a:['la pregunta'] },
+    { q:'домашнє завдання', a:['los deberes','los deberes de casa','la tarea'] },
+    { q:'іспанська мова', a:['el español','la lengua española','el castellano','el idioma español'] },
+    { q:'йти на заняття', a:['ir a clase','ir a las clases','ir a clases'] },
+  ],
+  P3: [
+    { q:'Yo (ver) ___ la televisión por la noche.', a:['veo'] },
+    { q:'Tú siempre (contar) ___ cosas interesantes.', a:['cuentas'] },
+    { q:'Yo (traer) ___ el diccionario a clase.', a:['traigo'] },
+    { q:'Ellos (cerrar) ___ la puerta del aula.', a:['cierran'] },
+    { q:'Nosotros (jugar) ___ al fútbol los sábados.', a:['jugamos'] },
+    { q:'Yo (ir) ___ a la biblioteca después de las clases.', a:['voy'] },
+    { q:'Mi abuela (recordar) ___ sus años escolares.', a:['recuerda'] },
+    { q:'¿Qué (pensar) ___ usted de este libro?', a:['piensa'] },
+    { q:'Yo (peinarse) ___ delante del espejo.', a:['me peino'] },
+    { q:'Los niños (dormirse) ___ enseguida.', a:['se duermen'] },
+  ],
+  P4: [
+    { q:'Mi madre ___ profesora de francés.', a:['es'] },
+    { q:'¿Cómo ___ usted? — Bien, gracias.', a:['está'] },
+    { q:'Ellos ___ argentinos, de Buenos Aires.', a:['son'] },
+    { q:'El libro ___ sobre la mesa.', a:['está'] },
+    { q:'¿Dónde ___ la fiesta? — En la discoteca.', a:['es'] },
+    { q:'Vosotros ___ de buen humor hoy.', a:['estáis'] },
+  ],
+  P5: [
+    { q:'La lámpara está ___ la mesa (над столом).', o:['sobre','en','de'], c:0 },
+    { q:'Vengo ___ la universidad y ahora voy a casa.', o:['a','de','en'], c:1 },
+    { q:'___ hacha es nueva.', o:['La','El','Lo'], c:1 },
+    { q:'Rosa corta el pelo ___ tijeras.', o:['con','de','por'], c:0 },
+    { q:'Ernesto va ___ río.', o:['a el','al','del'], c:1 },
+    { q:'¿Dónde están ___ libros de Luis que te di?', o:['— (nada)','unos','los'], c:2 },
+    { q:'Estudio en la Facultad ___ Traducción.', o:['de','de la','para'], c:0 },
+    { q:'Pasamos ___ el bosque.', o:['por','para','a'], c:0 },
+  ],
+  P6: [
+    { q:'Los niños hacen ___ deberes.', o:['su','sus','suyos'], c:1 },
+    { q:'Señora, ¿es ___ hija?', o:['su','tu','suya'], c:0 },
+    { q:'Estas maletas son ___. (de vosotros)', o:['vuestras','vuestros','vuestra'], c:0 },
+    { q:'Mi familia es pequeña; la ___ (de ella) es grande.', o:['suya','su','suyo'], c:0 },
+  ],
+  P7: [
+    { q:'Una hora tiene ___ minutos. (60)', a:['sesenta'] },
+    { q:'En mi grupo hay ___ estudiantes. (19)', a:['diecinueve'] },
+    { q:'Son las ___. (10:20)', a:['diez y veinte'] },
+    { q:'En la sala de lectura hay ___ revistas. (200)', a:['doscientas'] },
+  ],
+  P8: [
+    { q:'Сьогодні я не вчуся, я відпочиваю з друзями.', m:'Hoy no estudio, descanso con mis amigos.' },
+    { q:'У Латинській Америці є вісімнадцять країн, де розмовляють іспанською.', m:'En América Latina hay dieciocho países donde (en que) hablan (se habla) español.' },
+    { q:'Я вмиваюся, одягаюся і снідаю.', m:'Me lavo, me visto y desayuno.' },
+    { q:'Тобі подобається класична музика?', m:'¿Te gusta la música clásica?' },
+  ],
+},
+};
+if (typeof module !== 'undefined') module.exports = { PARTS, V };
+
+/* ===== ENGINE ===== */
+(function(){
+const $=s=>document.querySelector(s);
+const app=$('#app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const LET='abcdefgh';
+const store={get(){try{return JSON.parse(localStorage.getItem(META.store)||'null')}catch(e){return null}},
+  set(v){try{localStorage.setItem(META.store,JSON.stringify(v))}catch(e){}},
+  clear(){try{localStorage.removeItem(META.store)}catch(e){}}};
+if(/[?&]reset=1/.test(location.search)){store.clear();history.replaceState(null,'',location.pathname)}
+
+function buildSteps(v){const out=[];PARTS.forEach((p,pi)=>{out.push({k:'intro',p:pi,sec:CONFIG.INTRO_SEC});
+  V[v][p.id].forEach((it,ii)=>out.push({k:'q',p:pi,i:ii,sec:p.sec}))});return out}
+const maxOf=p=>V[1][p.id].length*p.pts;
+const AUTO_MAX=PARTS.filter(p=>p.type!=='free').reduce((a,p)=>a+maxOf(p),0);
+const FREE_MAX=PARTS.filter(p=>p.type==='free').reduce((a,p)=>a+maxOf(p),0);
+
+let st=null, steps=[], timer=null, shownAt=0, armed=0, lastField=null;
+
+function log(msg){const d=new Date();st.journal.push(d.toTimeString().slice(0,8)+' '+msg);save()}
+function save(){store.set(st)}
+
+/* ---------- start ---------- */
+function startScreen(){
+  const rows=PARTS.map((p,i)=>`<tr><td>${i+1}. ${esc(p.title)} (${V[1][p.id].length} × ${p.pts})</td><td>${maxOf(p)}</td></tr>`).join('');
+  const total=steps0().reduce((a,s)=>a+s.sec,0);
+  const tim=PARTS.map((p,i)=>`<tr><td>${i+1}. ${esc(p.title)}</td><td>${V[1][p.id].length} × ${p.sec} с</td></tr>`).join('');
+  app.innerHTML=`
+  <header class="top"><div class="wrap"><img class="logo" src="favicon.png" alt="" onerror="this.remove()"><div class="brand">@eduproberegova<small>Берегова Ольга, к.філол.н., доцент</small></div></div></header>
+  <main class="wrap">
+    <h1>${esc(META.title)}<br><em>${esc(META.sub)}</em></h1>
+    <p class="lead">${esc(META.course)} · Español ${esc(META.level)} · близько ${Math.round(total/60)} хвилин</p>
+    <section class="card">
+      <label class="f" for="nm">Прізвище та ім’я</label>
+      <input class="t" id="nm" autocomplete="name" placeholder="Прізвище Ім’я">
+      <div class="row2" style="margin-top:14px">
+        <div><label class="f" for="gr">Група</label><input class="t" id="gr" value="${esc(META.group)}"></div>
+        <div><span class="f" style="display:block;font-weight:600;margin:0 0 6px">Варіант</span>
+          <div class="vars">${[1,2,3,4].map(n=>`<label><input type="radio" name="v" id="v${n}" value="${n}">${n}</label>`).join('')}</div></div>
+      </div>
+      <p class="err" id="err"></p>
+      <button class="btn wide" id="go">Почати контрольну</button>
+    </section>
+    <section class="card">
+      <details class="acc" open><summary>Як проходить контрольна</summary>
+        <ul class="rules">
+          <li>Одне питання на екрані. Повернутися до попереднього питання не можна.</li>
+          <li>На кожне питання свій час. Коли він закінчується, програма сама переходить далі й зберігає те, що ви встигли написати.</li>
+          <li>Слова пишете самі, без підказок. Для літер á, é, í, ó, ú, ñ, ü, ¿, ¡ під полем є кнопки.</li>
+          <li>Не оновлюйте сторінку і не закривайте її: таймер іде далі.</li>
+          <li>Наприкінці робота автоматично надсилається викладачу. Дочекайтеся повідомлення «Enviado».</li>
+        </ul>
+      </details>
+      <details class="acc"><summary>Структура і бали</summary>
+        <table class="ct"><thead><tr><th>Завдання</th><th>Бали</th></tr></thead><tbody>${rows}
+        <tr class="tot"><td>Разом</td><td>${AUTO_MAX+FREE_MAX}</td></tr></tbody></table>
+        <p style="font-size:14px;color:var(--muted);margin:6px 0 0">Завдання 1–${PARTS.length-1} перевіряються автоматично. У завданнях, де ви пишете слово чи форму: правильно з наголосом — повний бал, правильно, але без потрібного наголосу (á, é…) — половина. Переклад (${FREE_MAX} балів) перевіряє викладач: зміст і лексика — 2, граматика — 3 бали за речення.</p>
+      </details>
+      <details class="acc"><summary>Час на завдання</summary>
+        <table class="ct"><tbody>${tim}<tr class="tot"><td>Разом (із заставками)</td><td>${fmt(total*1000)}</td></tr></tbody></table>
+      </details>
+      <details class="acc"><summary>Шкала оцінювання</summary>
+        <table class="ct"><thead><tr><th>Бали</th><th>ECTS</th><th>Оцінка</th></tr></thead><tbody>
+        <tr><td>90–100</td><td>A</td><td>відмінно</td></tr><tr><td>82–89</td><td>B</td><td>добре</td></tr><tr><td>74–81</td><td>C</td><td>добре</td></tr>
+        <tr><td>64–73</td><td>D</td><td>задовільно</td></tr><tr><td>60–63</td><td>E</td><td>задовільно</td></tr><tr><td>35–59</td><td>FX</td><td>незадовільно</td></tr><tr><td>0–34</td><td>F</td><td>незадовільно</td></tr></tbody></table>
+      </details>
+    </section>
+  </main>`;
+  $('#go').onclick=()=>{
+    const nm=$('#nm').value.trim(), gr=$('#gr').value.trim(), vi=document.querySelector('input[name="v"]:checked');
+    if(nm.split(/\s+/).length<2){$('#err').textContent='Впишіть прізвище та ім’я.';return}
+    if(!vi){$('#err').textContent='Оберіть варіант, який назвав викладач.';return}
+    const v=+vi.value;
+    st={name:nm,group:gr,v,idx:0,deadline:0,ans:{},journal:[],hidden:0,started:new Date().toISOString(),finished:false,sent:false};
+    steps=buildSteps(v); st.deadline=Date.now()+steps[0].sec*1000;
+    log(`Inicio · ${nm} · ${gr} · variante ${v} · ${navigator.userAgent}`);
+    run();
+  };
+}
+function steps0(){return buildSteps(1)}
+
+/* ---------- test ---------- */
+function remainingTotal(){let r=Math.max(0,st.deadline-Date.now());for(let i=st.idx+1;i<steps.length;i++)r+=steps[i].sec*1000;return r}
+function run(){
+  // catch up if the page was closed / reloaded
+  while(st.idx<steps.length && Date.now()>st.deadline){
+    log(`Paso ${st.idx+1}: tiempo agotado (página cerrada o recargada)`);
+    st.idx++; if(st.idx<steps.length) st.deadline+=steps[st.idx].sec*1000;
+  }
+  if(st.idx>=steps.length){finish();return}
+  save(); render();
+  clearInterval(timer); timer=setInterval(tick,250); tick();
+}
+function key(s){return PARTS[s.p].id+'.'+(s.i+1)}
+function render(){
+  const s=steps[st.idx], p=PARTS[s.p], n=V[st.v][p.id].length;
+  shownAt=Date.now(); armed=0;
+  const head=`<div class="thead"><div class="wrap"><div class="t">Parte ${s.p+1} / ${PARTS.length} · ${esc(p.title)}<small>${esc(st.name)} · variante ${st.v}</small></div><div class="total" title="Час до кінця">⏱ <span id="tt"></span></div></div><div class="bar"><i id="bar"></i></div></div>`;
+  if(s.k==='intro'){
+    app.innerHTML=head+`<main class="wrap qwrap"><section class="card intro">
+      <div class="num">PARTE ${s.p+1} DE ${PARTS.length}</div><h2>${esc(p.title)}</h2>
+      <p>${esc(p.instr)}</p><p class="instr">${n} ${n===1?'pregunta':'preguntas'} · ${p.sec} segundos cada una · ${maxOf(p)} puntos</p></section>
+      <div class="nav"><span class="hint">Empieza en <b id="cl"></b></span><button class="btn" id="nx">Empezar →</button></div></main>`;
+  } else {
+    const it=V[st.v][p.id][s.i], k=key(s), val=st.ans[k];
+    let body='';
+    if(p.type==='gap'){
+      const parts=it.q.split('___');
+      body=`<p class="q">${esc(parts[0])}<input class="gap" id="in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" value="${esc(val||'')}" size="${Math.max(10,(it.a[0]||'').length+4)}">${esc(parts.slice(1).join('___'))}</p>`;
+    } else if(p.type==='tr'){
+      body=`<p class="ua"><span class="flag">UA → ES</span>${esc(it.q)}</p><input class="t" id="in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" value="${esc(val||'')}">`;
+    } else if(p.type==='tf'){
+      body=`<p class="q">${esc(it.q)}</p><input class="t" id="in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Escriba la frase…" value="${esc(val||'')}">`;
+    } else if(p.type==='free'){
+      body=`<p class="ua"><span class="flag">UA → ES</span>${esc(it.q)}</p><textarea class="t" id="in" rows="3" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false">${esc(val||'')}</textarea>`;
+    } else if(p.type==='mc'){
+      body=`<p class="q">${esc(it.q).replace('___','<b style="color:var(--red)">_____</b>')}</p><div class="opts">${it.o.map((o,j)=>`<button class="opt${val===j?' on':''}" data-j="${j}"><b>${LET[j]})</b>${esc(o)}</button>`).join('')}</div>`;
+    }
+    const keys=p.type==='mc'?'':`<div class="keys" id="keys">${['á','é','í','ó','ú','ñ','ü','¿','¡'].map(c=>`<button type="button" tabindex="-1" data-c="${c}">${c}</button>`).join('')}</div>`;
+    const last=st.idx===steps.length-1;
+    app.innerHTML=head+`<main class="wrap qwrap"><section class="card">
+      <div class="qmeta"><span class="pill">${s.i+1} / ${n}</span><span class="clock" id="cl"></span></div>
+      <p class="instr">${esc(p.instr)}</p>${body}${keys}</section>
+      <div class="nav"><span class="hint" id="hint"></span><button class="btn" id="nx">${last?'Terminar':'Siguiente →'}</button></div></main>`;
+    const inp=$('#in');
+    if(inp){
+      lastField=inp;
+      const remember=()=>{st.ans[k]=inp.value;save()};
+      inp.addEventListener('input',remember);
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&p.type!=='free')e.preventDefault()});
+      setTimeout(()=>{try{inp.focus({preventScroll:true});const L=inp.value.length;inp.setSelectionRange(L,L)}catch(e){}},60);
+      const kb=$('#keys');
+      const ins=c=>{const f=lastField; if(!f)return; const a=f.selectionStart??f.value.length, b=f.selectionEnd??a;
+        f.setRangeText(c,a,b,'end'); f.dispatchEvent(new Event('input',{bubbles:true})); try{f.focus({preventScroll:true})}catch(e){}};
+      kb.querySelectorAll('button').forEach(bt=>{
+        bt.addEventListener('pointerdown',e=>{e.preventDefault()});
+        bt.addEventListener('mousedown',e=>{e.preventDefault()});
+        bt.addEventListener('click',e=>{e.preventDefault();ins(bt.dataset.c)});
+      });
+    }
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      st.ans[k]=+b.dataset.j; save();
+      app.querySelectorAll('.opt').forEach(x=>x.classList.toggle('on',x===b));
+    });
+  }
+  $('#nx').onclick=onNext;
+}
+function onNext(){
+  if(Date.now()-shownAt<CONFIG.GUARD_MS) return;
+  const s=steps[st.idx], rem=st.deadline-Date.now();
+  if(s.k==='q' && PARTS[s.p].type==='free' && rem>15000 && !(armed && Date.now()-armed<4000)){
+    armed=Date.now(); $('#hint').textContent=`¿Terminar ya? Quedan ${fmt(rem)} · pulse otra vez`; $('#nx').textContent='Sí, siguiente →'; return;
+  }
+  advance('botón');
+}
+function advance(how){
+  const s=steps[st.idx];
+  if(s.k==='q'){const k=key(s),v=st.ans[k];log(`${k} · ${how} · ${v===undefined?'(sin respuesta)':JSON.stringify(v)}`)}
+  else log(`Parte ${s.p+1}: inicio (${how})`);
+  st.idx++;
+  if(st.idx>=steps.length){finish();return}
+  st.deadline=Date.now()+steps[st.idx].sec*1000; save(); render(); tick();
+}
+function tick(){
+  if(!st||st.finished)return;
+  const s=steps[st.idx]; const rem=st.deadline-Date.now();
+  const cl=$('#cl'); if(cl){cl.textContent=fmt(rem); if(cl.classList){cl.classList.toggle('warn',rem<=10000&&rem>5000);cl.classList.toggle('danger',rem<=5000)}}
+  const tt=$('#tt'); if(tt) tt.textContent=fmt(remainingTotal());
+  const bar=$('#bar'); if(bar) bar.style.width=(100*st.idx/steps.length)+'%';
+  if(rem<=0) advance('tiempo');
+}
+document.addEventListener('visibilitychange',()=>{ if(st&&!st.finished){ if(document.hidden){st.hidden++;log('⚠ Salió de la página (otra pestaña o aplicación)')} else log('Volvió a la página') } });
+
+/* ---------- grading ---------- */
+const norm=s=>String(s||'').normalize('NFC').toLowerCase().replace(/[’`´]/g,"'").replace(/[¡!¿?.,;:«»"“”()]/g,' ').replace(/\s+/g,' ').trim();
+const noAcc=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+const noArt=s=>s.replace(/^(el|la|los|las|un|una|unos|unas) /,'');
+function gradeText(p,given,answers){
+  let g=norm(given); if(!g) return 0;
+  let A=answers.map(norm);
+  if(p.art){g=noArt(g);A=A.map(noArt)}
+  if(A.includes(g)) return p.pts;
+  if(A.map(noAcc).includes(noAcc(g))) return p.pts/2;
+  return 0;
+}
+function grade(){
+  const res=[]; let auto=0; const per={};
+  PARTS.forEach(p=>{per[p.id]=0;
+    V[st.v][p.id].forEach((it,i)=>{const k=p.id+'.'+(i+1), g=st.ans[k]; let pts=null, keyTxt='', you='';
+      if(p.type==='mc'){you=g===undefined?'':LET[g]+') '+it.o[g]; keyTxt=LET[it.c]+') '+it.o[it.c]; pts=g===it.c?p.pts:0}
+      else if(p.type==='free'){you=g||''; keyTxt=it.m}
+      else {you=g||''; keyTxt=it.a.join(' / '); pts=gradeText(p,g,it.a)}
+      if(pts!==null){auto+=pts;per[p.id]+=pts}
+      res.push({k,p,it,you,keyTxt,pts});
+    });
+  });
+  return {res,auto,per};
+}
+function ects(x){return x>=90?'A':x>=82?'B':x>=74?'C':x>=64?'D':x>=60?'E':x>=35?'FX':'F'}
+
+/* ---------- finish & send ---------- */
+function report(g){
+  const L=[];
+  L.push(`${META.title} · ${META.sub} · ${META.course}`);
+  L.push(`Estudiante: ${st.name} · Grupo: ${st.group} · Variante: ${st.v}`);
+  L.push(`Inicio: ${st.started} · Fin: ${st.ended}`);
+  L.push(`Parte automática: ${g.auto} / ${AUTO_MAX} · Traducción: ___ / ${FREE_MAX} (revisa la profesora)`);
+  L.push(`Salidas de la página: ${st.hidden}`);
+  L.push('');
+  PARTS.forEach((p,pi)=>{
+    L.push(`— ${pi+1}. ${p.title}` + (p.type==='free'?` (___ / ${maxOf(p)})`:` (${g.per[p.id]} / ${maxOf(p)})`));
+    g.res.filter(r=>r.p===p).forEach(r=>{
+      const mark=r.pts===null?'[revisar]':r.pts===p.pts?'✓':r.pts>0?'½':'✗';
+      L.push(`${r.k} ${mark}${r.pts===null?'':' ('+r.pts+')'} · ${r.it.q}\n    respuesta: ${r.you||'(vacío)'}\n    ${r.pts===null?'modelo':'correcto'}: ${r.keyTxt}`);
+    });
+    L.push('');
+  });
+  return L.join('\n');
+}
+function finish(){
+  clearInterval(timer);
+  if(!st.finished){st.finished=true; st.ended=new Date().toISOString(); log('Fin de la prueba'); save()}
+  const g=grade(); renderResults(g);
+  if(!st.sent) send(g);
+}
+async function send(g){
+  const box=$('#status'); const set=(c,t)=>{if(box){box.className='status '+c;box.textContent=t}};
+  set('wait','Enviando… No cierre la página.');
+  try{
+    const fd=new FormData();
+    fd.append('_subject',`${META.short} · ${st.name} · V${st.v} · ${g.auto}/${AUTO_MAX}`);
+    fd.append('curso',META.course); fd.append('nombre',st.name); fd.append('grupo',st.group); fd.append('variante',String(st.v));
+    fd.append('puntos_auto',`${g.auto} / ${AUTO_MAX}`); fd.append('salidas_de_pagina',String(st.hidden));
+    fd.append('informe',report(g)); fd.append('diario',st.journal.join('\n'));
+    const r=await fetch(CONFIG.FORM_URL,{method:'POST',body:fd,headers:{Accept:'application/json'}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    st.sent=true; log('Enviado'); save(); set('ok','✓ Enviado. La profesora ha recibido su trabajo.');
+    const rb=$('#resend'); if(rb) rb.style.display='none';
+  }catch(e){
+    log('Error al enviar: '+e.message); save();
+    set('bad','No se ha podido enviar. Compruebe internet y pulse «Enviar otra vez». Si no funciona, guarde el PDF y envíelo a la profesora.');
+    const rb=$('#resend'); if(rb) rb.style.display='';
+  }
+}
+function renderResults(g){
+  const sc=g.res.map(r=>{
+    const cls=r.pts===null?'rev':r.pts===r.p.pts?'ok':r.pts>0?'half':'no';
+    const mark=r.pts===null?'·':r.pts===r.p.pts?'✓':r.pts>0?'½':'✗';
+    const showKey=CONFIG.SHOW_KEY && (r.pts===null || r.pts<r.p.pts);
+    return `<div class="it ${cls}"><span class="m">${mark} ${r.k}</span>${esc(r.it.q)}<br><span class="you">Su respuesta: ${esc(r.you||'—')}</span>${showKey?`<br><span class="key">${r.pts===null?'Modelo':'Correcto'}: ${esc(r.keyTxt)}</span>`:''}</div>`;
+  }).join('');
+  const perRows=PARTS.map((p,i)=>`<tr><td>${i+1}. ${esc(p.title)}</td><td>${p.type==='free'?'— / '+maxOf(p):g.per[p.id]+' / '+maxOf(p)}</td></tr>`).join('');
+  app.innerHTML=`
+  <header class="top"><div class="wrap"><img class="logo" src="favicon.png" alt="" onerror="this.remove()"><div class="brand">@eduproberegova<small>${esc(META.title)} · ${esc(META.course)}</small></div></div></header>
+  <main class="wrap"><h1>Prueba terminada</h1>
+    <p class="lead">${esc(st.name)} · ${esc(st.group)} · variante ${st.v}</p>
+    <div id="status" class="status wait">Enviando…</div>
+    <section class="card">
+      <div class="score"><div><b>${g.auto} / ${AUTO_MAX}</b><span>parte automática</span></div><div><b>— / ${FREE_MAX}</b><span>traducción: la revisa la profesora</span></div></div>
+      <table class="ct"><tbody>${perRows}</tbody></table>
+    </section>
+    <div class="btns" style="margin:0 0 16px"><button class="btn" id="resend" style="display:none">Enviar otra vez</button><button class="btn sec" id="pdf">Guardar en PDF</button></div>
+    <section class="card"><h3 style="margin:0 0 6px">Sus respuestas</h3>${sc}</section>
+  </main>`;
+  $('#pdf').onclick=()=>window.print();
+  $('#resend').onclick=()=>send(g);
+  if(st.sent){const b=$('#status');b.className='status ok';b.textContent='✓ Enviado. La profesora ha recibido su trabajo.'}
+}
+
+/* ---------- boot ---------- */
+const saved=store.get();
+if(saved && saved.v && V[saved.v]){
+  st=saved; steps=buildSteps(st.v);
+  if(st.finished) finish(); else { log('Página recargada — se continúa'); run(); }
+} else startScreen();
+})();
+</script>
+</body>
+</html>
